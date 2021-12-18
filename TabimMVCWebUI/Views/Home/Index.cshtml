@@ -1,0 +1,86 @@
+﻿@model IEnumerable<TabimMVCWebUI.Entity.UserOperation>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Talep Listem</h2>
+            <hr />
+
+            <p>
+                @Html.ActionLink("Create New", "Create",null, new {@class="btn btn-primary" })
+            </p>
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NameSurname)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Documantation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsApproved)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UploadTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ManagerDescription)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ManagerUploadTime)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NameSurname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Documantation)
+                </td>
+                <td>
+                    @if (item.IsApproved == true)
+                    {
+                        <label class="badge badge-success">Olumlu</label>
+                    }
+                    @if (item.IsApproved == false)
+                    {
+                        <label class="badge badge-danger">Olumsuz</label>
+                    }
+                    @if (item.IsApproved == null)
+                    {
+                        <label class="badge badge-warning">Okunmadı.</label>
+                    }
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UploadTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ManagerDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ManagerUploadTime)
+                </td>
+                <td>
+                    @Html.ActionLink("Sil", "Delete", new { id = item.Id }, new { @class = "btn btn-warning" })
+                </td>
+            </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

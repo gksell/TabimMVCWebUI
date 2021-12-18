@@ -1,0 +1,82 @@
+﻿@model IEnumerable<TabimMVCWebUI.Entity.UserOperation>
+@{
+    ViewBag.Title = "ListAdmin";
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Admine Ulaşan Liste</h2>
+            <hr />
+
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NameSurname)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Documantation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsApproved)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UploadTime)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NameSurname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Documantation)
+                        </td>
+                        <td>
+                            @if (item.IsApproved == true)
+                            {
+                                <label class="badge badge-success">Olumlu</label>
+                            }
+                            @if (item.IsApproved == false)
+                            {
+                                <label class="badge badge-danger">Olumsuz</label>
+                            }
+                            @if (item.IsApproved == null)
+                            {
+                                <label class="badge badge-warning">Okunmadı.</label>
+                            }
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UploadTime)
+                        </td>
+
+                        <td>
+
+                            @Html.ActionLink("Değerlendir", "Edit", new { id = item.Id }, new { @class = "btn btn-success btn-sm" })
+                            @Html.ActionLink("Detaylar", "Details", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>
