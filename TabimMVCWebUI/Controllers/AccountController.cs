@@ -13,10 +13,8 @@ using TabimMVCWebUI.Models;
 
 namespace TabimMVCWebUI.Controllers
 {
-    
     public class AccountController : Controller
     {
-        private DataContext db = new DataContext();
 
         public UserManager<ApplicationUser> UserManager;
         private RoleManager<ApplicationRole> RoleManager;
@@ -78,9 +76,7 @@ namespace TabimMVCWebUI.Controllers
             {
                 // Login yapılacak
                 var user = UserManager.Find(model.UserName,model.Password);
-                
-                
-                
+
                 if (user != null)
                 {
                     // var olan kullanıcı sisteme dahil olsun 
@@ -118,6 +114,11 @@ namespace TabimMVCWebUI.Controllers
             var authManager = HttpContext.GetOwinContext().Authentication;
             authManager.SignOut();
             return RedirectToAction("Index", "Home");
+        }
+        public ActionResult UnAuthorized()
+        {
+            return View();
+           
         }
     }
 }

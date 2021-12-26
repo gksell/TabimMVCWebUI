@@ -24,6 +24,7 @@ namespace TabimMVCWebUI.Models
         [Required]
         [DisplayName("Telefon Numaranız")]
         [Phone(ErrorMessage ="Telefon numarası formatında giriş yapınız")]
+        [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
         [Required]
         [DisplayName("Şifreniz")]

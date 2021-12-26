@@ -11,7 +11,7 @@ using Microsoft.AspNet.Identity;
 
 namespace TabimMVCWebUI.Controllers
 {
-    [Authorize(Roles = "user")]
+    [Authorize(Roles ="user")]
     public class HomeController : Controller
     {
         private DataContext db = new DataContext();
@@ -20,14 +20,17 @@ namespace TabimMVCWebUI.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            
+            
             // if null check yapılacak !
             // view düzenle olumlu olumsuz ekleme yapılacak ! 
             var userId = User.Identity.GetUserId();
-            return View(db.UserOperation.Where(i=>i.UserId==userId).ToList());
+            var list = db.UserOperation
+                .Where(i => i.UserId == userId);
+                
+            return View(list.ToList());
         }
 
-        
-        
         // GET: Home/Create
         public ActionResult Create()
         {
@@ -40,10 +43,18 @@ namespace TabimMVCWebUI.Controllers
         [Authorize(Roles = "user")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,NameSurname,Description,Documantation,IsApproved,UploadTime,ManagerDescription,ManagerUploadTime")] UserOperation userOperation)
+        public ActionResult Create([Bind(Include = "Id,NameSurname,Description,Documantation,IsApproved,UploadTime,ManagerDescription,ManagerUploadTime")]  UserOperation userOperation)
         {
             if (ModelState.IsValid)
             {
+                if (Request.Files.Count>0)
+                {
+                    string DosyaAdi = Guid.NewGuid().ToString().Replace("-", "");
+                    string uzanti = System.IO.Path.GetExtension(Request.Files[0].FileName);
+                    string tamYolYeri = "~/Image/" + DosyaAdi + uzanti;
+                    Request.Files[0].SaveAs(Server.MapPath(tamYolYeri));
+                    userOperation.Documantation = DosyaAdi + uzanti;
+                }
                 userOperation.UploadTime = DateTime.Now;
                 userOperation.UserId = User.Identity.GetUserId();
                 db.UserOperation.Add(userOperation);
