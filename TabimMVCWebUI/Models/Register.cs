@@ -23,8 +23,8 @@ namespace TabimMVCWebUI.Models
         public string Username { get; set; }
         [Required]
         [DisplayName("Telefon Numaranız")]
-        [Phone(ErrorMessage ="Telefon numarası formatında giriş yapınız")]
-        [DataType(DataType.PhoneNumber)]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Geçerli bir telefon numarası giriniz.")]
+        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Wrong mobile")]
         public string PhoneNumber { get; set; }
         [Required]
         [DisplayName("Şifreniz")]

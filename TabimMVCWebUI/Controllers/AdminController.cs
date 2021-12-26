@@ -69,13 +69,14 @@ namespace TabimMVCWebUI.Controllers
         [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,NameSurname,Description,Documantation,IsApproved,ManagerDescription,ManagerUploadTime")] UserOperation userOperation)
+        public ActionResult Edit([Bind(Include = "Id,Description,Documantation,IsApproved,ManagerDescription,ManagerUploadTime")] UserOperation userOperation)
         {
             if (ModelState.IsValid)
             {
                 var ent = db.UserOperation.Find(userOperation.Id);
                 if (ent != null)
                 {
+                    ent.NameSurname = userOperation.NameSurname;
                     userOperation.ManagerUploadTime = DateTime.Now;
                     ent.IsApproved = userOperation.IsApproved;
                     ent.ManagerDescription = userOperation.ManagerDescription;
@@ -104,7 +105,7 @@ namespace TabimMVCWebUI.Controllers
             MailMessage ePosta = new MailMessage();
             ePosta.From = new MailAddress("sender@atanur.net", " Yeni Mesaj var!"); //E-Posta'nin kimden gönderileceği bilgisini tutar.
             ePosta.To.Add("gokselyildizak@gmail.com");
-            ePosta.To.Add("aydin@atanur.net");
+           
             //ePosta.Attachments.Add(new Attachment(@"C:\deneme.txt")); //Eklenecek dosya konumunu tutar.
             ePosta.Subject = "Talep Detayı Hakkında"; // Konu bilgisi tutar
             ePosta.IsBodyHtml = true;

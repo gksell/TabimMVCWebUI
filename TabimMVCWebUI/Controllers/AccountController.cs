@@ -87,10 +87,10 @@ namespace TabimMVCWebUI.Controllers
                     var authProperties = new AuthenticationProperties();
 
                     authManager.SignIn(authProperties, identityClaims);
-                    if (!String.IsNullOrEmpty(ReturnUrl))
-                    {
-                        return Redirect(ReturnUrl);
-                    }
+                    //if (!String.IsNullOrEmpty(ReturnUrl))
+                    //{
+                    //    return Redirect(ReturnUrl);
+                    //}
 
                     var userType = user.UserType;
                     if (userType.Equals("admin"))

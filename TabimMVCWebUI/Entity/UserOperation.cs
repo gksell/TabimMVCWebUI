@@ -29,5 +29,7 @@ namespace TabimMVCWebUI.Entity
         public DateTime? ManagerUploadTime { get; set; }
         [DisplayName("Kullanıcı ID")]
         public string UserId { get; set; }
+        [DisplayName("Kullanıcı Mail Adresi")]
+        public string UserEmail { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace TabimMVCWebUI.Controllers
             // if null check yapılacak !
             // view düzenle olumlu olumsuz ekleme yapılacak ! 
             var userId = User.Identity.GetUserId();
+            
             var list = db.UserOperation
                 .Where(i => i.UserId == userId);
                 
@@ -56,6 +57,7 @@ namespace TabimMVCWebUI.Controllers
                     userOperation.Documantation = DosyaAdi + uzanti;
                 }
                 userOperation.UploadTime = DateTime.Now;
+                userOperation.UserEmail = User.Identity.GetUserName();
                 userOperation.UserId = User.Identity.GetUserId();
                 db.UserOperation.Add(userOperation);
                 db.SaveChanges();
