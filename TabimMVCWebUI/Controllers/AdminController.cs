@@ -21,6 +21,7 @@ namespace TabimMVCWebUI.Controllers
             var liste = db.UserOperation
                 .Where(i => i.IsApproved == null);
             liste = liste.OrderByDescending(i => i.UploadTime);
+
             return View(liste.ToList());
         }
 
@@ -69,7 +70,7 @@ namespace TabimMVCWebUI.Controllers
         [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Description,Documantation,IsApproved,ManagerDescription,ManagerUploadTime")] UserOperation userOperation)
+        public ActionResult Edit([Bind(Include = "Id,NameSurname,Description,Documantation,IsApproved,ManagerDescription,ManagerUploadTime")] UserOperation userOperation)
         {
             if (ModelState.IsValid)
             {
@@ -81,8 +82,9 @@ namespace TabimMVCWebUI.Controllers
                     ent.IsApproved = userOperation.IsApproved;
                     ent.ManagerDescription = userOperation.ManagerDescription;
                     ent.ManagerUploadTime = userOperation.ManagerUploadTime;
+                    
                     db.SaveChanges();
-                    SendMail("gokselyildizak@gmail.com", userOperation.NameSurname,userOperation.ManagerDescription,userOperation.IsApproved);
+                    SendMail(userOperation.NameSurname,userOperation.Description,userOperation.ManagerDescription,userOperation.IsApproved);
                     return RedirectToAction("Index");
                 }
             }
@@ -95,21 +97,26 @@ namespace TabimMVCWebUI.Controllers
             return report;
         }
 
-        public void SendMail(string mail_Adresi,string name,string description,bool? durum)
+        public void SendMail(string name,string description,string mDescription,bool? durum)
         {
-            string durum2 = "";
+            string durum2 = null;
             if (durum == true)
+            {
                 durum2 = "olumlu";
-            else
+            }
+            if (durum==false)
+            {
                 durum2 = "olumsuz";
+            }
+                
             MailMessage ePosta = new MailMessage();
-            ePosta.From = new MailAddress("sender@atanur.net", " Yeni Mesaj var!"); //E-Posta'nin kimden gönderileceği bilgisini tutar.
+            ePosta.From = new MailAddress("sender@atanur.net", " Göksel Yıldızak"); //E-Posta'nin kimden gönderileceği bilgisini tutar.
             ePosta.To.Add("gokselyildizak@gmail.com");
            
             //ePosta.Attachments.Add(new Attachment(@"C:\deneme.txt")); //Eklenecek dosya konumunu tutar.
             ePosta.Subject = "Talep Detayı Hakkında"; // Konu bilgisi tutar
             ePosta.IsBodyHtml = true;
-            ePosta.Body = "Sayın " + name + ";" + description + "  talebiniz " + durum2 + " sonuçlandırılmıştır. "; // İçerik bilgisini tutar
+            ePosta.Body = "Sayın " + name + " ; "+ description + "  talebiniz "+ mDescription +" nedeni ile " + durum2 + " sonuçlandırılmıştır. "; // İçerik bilgisini tutar
 
             SmtpClient smtp = new SmtpClient();
 
@@ -131,27 +138,5 @@ namespace TabimMVCWebUI.Controllers
             }
 
         }
-        /*    public static void MailSender(string body)
-            {
-                var fromAddress = new MailAddress("sender@atanur.net");
-                var toAddress = new MailAddress("gokselyildizak@gmail.com");
-                const string subject = "Site Adı | Sitenizden Gelen Iletisim Formu";
-                using (var smtp = new SmtpClient
-                {
-                    Host = "45.158.12.111",
-                    Port = 587,
-                    EnableSsl = false,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, "*%_ntE-rcnNH")
-                })
-                {
-                    using (var message = new MailMessage(fromAddress, toAddress) { Subject = subject, Body = body })
-                    {
-                        smtp.Send(message);
-                    }
-                }
-            }*/
-
     }
 }

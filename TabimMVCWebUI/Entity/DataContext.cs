@@ -8,7 +8,7 @@ namespace TabimMVCWebUI.Entity
 {
     public class DataContext:DbContext
     {
-        // If I comment this constructor out the scaffolding works
+        
         public DataContext():base("dataConnection")
         {
             
